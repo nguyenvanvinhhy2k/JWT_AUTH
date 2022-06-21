@@ -1,0 +1,29 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --inspect index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyenvanvinhhy2k/nodejs.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "nguyenvanvinhhy2k",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyenvanvinhhy2k/nodejs/issues"
+  },
+  "homepage": "https://github.com/nguyenvanvinhhy2k/nodejs#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
