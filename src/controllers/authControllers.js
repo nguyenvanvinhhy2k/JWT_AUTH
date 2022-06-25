@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
+const refreshTokens = [];
 const authController = {
   //REGISTER
   registerUser: async (req, res) => {
@@ -48,7 +49,7 @@ const authController = {
           { expiresIn: "30s" } // Time hết hạn token
         );
         // Sign = tạo refresh token
-        const RefreshToken = jwt.sign(
+        const refreshToken = jwt.sign(
           {
             id: user.id,
             isAdmin: user.isAdmin,
@@ -56,12 +57,66 @@ const authController = {
           process.env.TOKEN_KEY, // Mã secretKey
           { expiresIn: "365d" } // Time hết hạn refresh token
         );
+        refreshTokens.push(refreshToken); // Lưu refresh token vào mảng
+        res.cookie("refreshToken", refreshToken, {
+          // Save refreshToken vào cookie
+          httpOnly: true,
+          secure: false,
+          path: "/",
+          sameSite: "strict",
+        });
         const { password, ...orther } = user._doc; // Trả về tt user trừ password
-        res.status(200).json({ ...orther, token, RefreshToken });
+        res.status(200).json({ ...orther, token });
       }
     } catch (error) {
       res.status(500).json(err);
     }
+  },
+  // REFRESH TOKEN
+  refreshToken: async (req, res) => {
+    try {
+      const refreshToken = req.cookies.refreshToken;
+      if (!refreshToken) res.status(401).json("You not authenticated");
+      jwt.verify(refreshToken, process.env.TOKEN_KEY, (error, user) => {
+        if (error) {
+          console.log(error);
+        }
+        // Sign = tạo new token
+        const newToken = jwt.sign(
+          {
+            id: user.id,
+            isAdmin: user.isAdmin,
+          }, // Tạo mã token có id và isAdmin
+          process.env.TOKEN_KEY, // Mã secretKey
+          { expiresIn: "30s" } // Time hết hạn token
+        );
+        // Sign = tạo new refresh token
+        const newRefreshToken = jwt.sign(
+          {
+            id: user.id,
+            isAdmin: user.isAdmin,
+          }, // Tạo mã refresh token có id và isAdmin
+          process.env.TOKEN_KEY, // Mã secretKey
+          { expiresIn: "365d" } // Time hết hạn refresh token
+        );
+        res.cookie("refreshToken", newRefreshToken, {
+          // Save refreshToken vào cookie
+          httpOnly: true,
+          secure: false,
+          path: "/",
+          sameSite: "strict",
+        });
+        res.status(200).json({ token: newToken });
+      });
+    } catch (error) {
+      res.status(500).json(err);
+    }
+  },
+
+  // LOGOUT
+  logout: async (req, res) => {
+    res.clearCookie("refreshToken");
+    res.status(200).json("Log out success");
   },
 };
 
