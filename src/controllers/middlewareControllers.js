@@ -7,7 +7,7 @@ const middlewareControllers = {
     if (token) {
       const accessToken = token.split(" ")[1];
       // verify = Xác nhận token
-      jwt.verify(accessToken, "secretkey", (error, user) => {
+      jwt.verify(accessToken, process.env.TOKEN_KEY, (error, user) => {
         if (error) {
           res.status(403).json("Token is not valid");
         }

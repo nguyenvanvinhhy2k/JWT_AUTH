@@ -44,7 +44,7 @@ const authController = {
             id: user.id,
             isAdmin: user.isAdmin,
           }, // Tạo mã token có id và isAdmin
-          "secretkeyToken", // Mã secretKey
+          process.env.TOKEN_KEY, // Mã secretKey
           { expiresIn: "30s" } // Time hết hạn token
         );
         // Sign = tạo refresh token
@@ -53,7 +53,7 @@ const authController = {
             id: user.id,
             isAdmin: user.isAdmin,
           }, // Tạo mã refresh token có id và isAdmin
-          "secretkeyRefreshToken", // Mã secretKey
+          process.env.TOKEN_KEY, // Mã secretKey
           { expiresIn: "365d" } // Time hết hạn refresh token
         );
         const { password, ...orther } = user._doc; // Trả về tt user trừ password
