@@ -6,12 +6,15 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = 8000;
 const authRoute = require("./routes/auth");
+const userRoute = require("./routes/user");
+const dotenv = require("dotenv");
 
+dotenv.config();
 mongoose
-  .connect(
-    "mongodb+srv://nguyenvinhhy21:ryNWdkd5Jq5quHcq@cluster0.zhjerx0.mongodb.net/?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("mongodb is connected");
   })
@@ -25,6 +28,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("combined"));
 
+app.use("/user", userRoute);
 app.use("/auth", authRoute);
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
