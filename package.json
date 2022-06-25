@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nguyenvanvinhhy2k/nodejs.git"
+    "url": "git+https://github.com/nguyenvanvinhhy2k/JWT_AUTH_NODEJS.git"
   },
   "keywords": [
     "nodejs"
@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/nguyenvanvinhhy2k/nodejs/issues"
   },
-  "homepage": "https://github.com/nguyenvanvinhhy2k/nodejs#readme",
+  "homepage": "https://github.com/nguyenvanvinhhy2k/JWT_AUTH_NODEJS.git#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
